@@ -47,4 +47,6 @@
 * call_kernel_function - Provides an array of kernel weights to choose from.
 * normsort - sorts the distance of the training regressor datapoints from the current operating point.
 
+* Header file contains preprocessor directives, function declarations, and namespaces. Additionally, each file is equipped with a main function (commented) for unit testing.
+
 
