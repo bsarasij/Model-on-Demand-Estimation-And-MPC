@@ -32,13 +32,19 @@
 
 ## Function Description
 <br>
+
 * Main File is used to run the algorithm. It uses a random time series generator to create synthetic data for testing the algorithm.
+
 * time_series_data - creates estimation/validation datasets.
-* modmkdb - Takes the input-output data and sends to modmkreg to create the regressor matrices
+  
+* modmkdb - Takes the input-output data and sends to modmkreg to create the regressor matrices.
+  
 * modmkreg - Generates the regressors
+  
 * modcmp - Wrapper around locpol
+  
 * locpol - Local polynomial generator. Returns coefficients of the time series model, the prediction, and the neighborhood size at each time instant.
 * call_kernel_function - Provides an array of kernel weights to choose from.
-* normsort - sorts the distance of the training regressor datapoints from the current operating point,
+* normsort - sorts the distance of the training regressor datapoints from the current operating point.
 
 
