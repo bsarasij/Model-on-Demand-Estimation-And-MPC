@@ -1,40 +1,4 @@
-#include <iostream>
-#include <vector>
-#include <cmath>
-#include <algorithm>
-#include <tuple>
-#include <cstring>  
-#include <stdexcept>
-#include <Eigen/Dense>
-#include <Eigen/Sparse>
-#include <numeric>
-
-using namespace std;
-using namespace Eigen;
-
-// Define struct to hold the output S
-struct LocPolResult {
-    double var;           // Variance estimate
-    double conf;          // Confidence interval
-    VectorXd k;           // Number of nearest neighbors for each evaluation
-    VectorXd h;           // Bandwidth values used
-    VectorXd gof;         // Goodness-of-fit values
-    VectorXd Y_selected;  // Y values
-    MatrixXd X_selected;  // X values
-    int kopt;             // Optimal number of nearest neighbors
-    int dim;              // Dimension of the regressor
-    VectorXd resid;       // Residuals (Y - Y_est)
-};
-
-tuple<VectorXd, MatrixXd, VectorXd, VectorXd>
-normsort(const VectorXd& Y,
-    const MatrixXd& X,
-    MatrixXd M = MatrixXd(),
-    VectorXd V = VectorXd(),
-    int kmax = -1);
-
-VectorXd call_kernel_function(const char* kernel_type, const VectorXd& u);
-
+#include "Header.h"
 // Function to construct the local design matrix
 tuple<MatrixXd, int> mkdesign(const MatrixXd& X, int pol_ord) {
     int d = X.rows();

@@ -1,12 +1,4 @@
-#include <iostream>
-#include <Eigen/Dense>
-#include <vector>
-#include <tuple>
-#include <algorithm>
-#include <numeric>
-
-using namespace std;
-using namespace Eigen;
+#include "Header.h"
 
 // Function to normalize a matrix
 MatrixXd normalizeMatrix(const MatrixXd& M) {

@@ -1,13 +1,4 @@
-#define _USE_MATH_DEFINES
-
-#include <cmath>
-#include <stdexcept>
-#include <iostream>
-#include <Eigen/Dense>
-
-using namespace std;
-using namespace Eigen;
-
+#include "Header.h"
 
 // Gaussian 
 VectorXd gaussian_kernel(const VectorXd& u) {

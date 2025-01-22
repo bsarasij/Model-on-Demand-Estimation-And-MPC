@@ -1,36 +1,4 @@
-#include <iostream>
-#include <Eigen/Dense>
-#include <vector>
-
-using namespace std;
-using namespace Eigen;
-
-struct EstimationData {
-    Eigen::VectorXd Y;      // Output of estimation data set 
-    Eigen::MatrixXd X;  // Regressor of estimation data set
-    Eigen::VectorXd var;    // Variance
-    Eigen::MatrixXd M;      // Model data
-    Eigen::MatrixXd nn;        // Model order [na nb nk]
-    int size;                   // Size of the dataset
-    double T;                   // Sampling interval
-};
-
-// Define a struct to hold all outputs of modcmp_simplified
-struct ModCmpOutputs {
-    MatrixXd yho;             // Predicted outputs
-    MatrixXd kopto;           // Optimal bandwidths
-    MatrixXd confl;           // Confidence lower bounds
-    MatrixXd confh;           // Confidence upper bounds
-    MatrixXd beta_estimate;   // regerssor coefficients
-};
-
-
-// Function Declaration for Data Generation for Estimation and Validation
-MatrixXd generate_arx_dataset();
-EstimationData modmkdb(const Eigen::MatrixXd& z, const std::vector<int>& nn, double T, double ve);
-ModCmpOutputs modcmp(MatrixXd& iodatav, const EstimationData& Z, int M,
-    const vector<int>& km, MatrixXd Sc,
-    const char* guimm, const VectorXd& samp, int P);
+#include "Header.h"
 
 int main() {
 

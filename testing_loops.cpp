@@ -1,13 +1,5 @@
-#include <iostream>
-#include <vector>
-#include <Eigen/Dense>
-#include <stdexcept>
-#include <cmath>
-#include <optional> // For std::optional
-#include <utility>  // For std::pair
-#include <numeric>  // For iota
-using namespace std;
-using namespace Eigen;
+#include "Header.h"
+
 //void main()
 //{
 //    int ny = 2;

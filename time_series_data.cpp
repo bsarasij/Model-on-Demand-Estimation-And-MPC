@@ -1,10 +1,4 @@
-#include <iostream>
-#include <Eigen/Dense>
-#include <cstdlib>
-#include <ctime>
-
-using namespace std;
-using namespace Eigen;
+#include "Header.h"
 
 // Function to generate random data in the range [-1, 1]
 double random_value() {

@@ -1,32 +1,4 @@
-#include <vector>
-#include <cmath>
-#include <tuple>
-#include <Eigen/Dense>
-#include <iostream>
-
-
-using namespace Eigen;
-using namespace std;
-
-struct EstimationData {
-    Eigen::VectorXd Y;      // Output of estimation data set 
-    Eigen::MatrixXd X;  // Regressor of estimation data set 
-    Eigen::VectorXd var;    // Variance
-    Eigen::MatrixXd M;      // Scaling Matrix
-    Eigen::MatrixXd nn;        // Model order [na nb nk]
-    int size;                   // Size of the dataset
-    double T;                   // Sampling interval
-};
-
-struct RegressionResult {
-    VectorXd y;
-    vector<MatrixXd> phi;
-    vector<MatrixXd> M;
-    VectorXd v;
-};
-
-// Function Declaration for modmkreg
-RegressionResult modmkreg(const Eigen::MatrixXd& z, const std::vector<int>& nn, double ve);
+#include "Header.h"
 
 EstimationData modmkdb(const Eigen::MatrixXd& z, const std::vector<int>& nn, double T = 1.0, double ve = 0.0) {
     // Ensure ve is non-negative

@@ -1,11 +1,4 @@
-#include <iostream>
-#include <vector>
-#include <stdexcept>
-#include <algorithm>
-#include <Eigen/Dense>
-#include <numeric>
-using namespace std;
-using namespace Eigen;
+#include "Header.h"
 
 // Function to compute standard deviation of a vector
 VectorXd computeStdDev(const MatrixXd& mat) {
@@ -17,14 +10,6 @@ VectorXd computeStdDev(const MatrixXd& mat) {
     }
     return stddev;
 }
-
-//Structure to hold results
-struct RegressionResult {
-    VectorXd y;
-    vector<MatrixXd> phi;
-    vector<MatrixXd> M;
-    VectorXd v;
-};
 
 RegressionResult modmkreg(const MatrixXd& z, const vector<int>& nn, double ve = 0.0) {
     int n = z.rows();
