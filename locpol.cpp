@@ -19,11 +19,11 @@ struct LocPolResult {
     VectorXd k;           // Number of nearest neighbors for each evaluation
     VectorXd h;           // Bandwidth values used
     VectorXd gof;         // Goodness-of-fit values
-    VectorXd Y_selected;  // Selected Y values
-    MatrixXd X_selected;  // Selected X values
+    VectorXd Y_selected;  // Y values
+    MatrixXd X_selected;  // X values
     int kopt;             // Optimal number of nearest neighbors
     int dim;              // Dimension of the regressor
-    VectorXd resid;       // Residuals
+    VectorXd resid;       // Residuals (Y - Y_est)
 };
 
 tuple<VectorXd, MatrixXd, VectorXd, VectorXd>
@@ -76,10 +76,10 @@ tuple<MatrixXd, int> mkdesign(const MatrixXd& X, int pol_ord) {
     return make_tuple(Xx, npar);
 }
 
-// Main locpol_simplified function
-tuple<VectorXd, double, LocPolResult> locpol_simplified(
+// locpol function
+tuple<VectorXd, double, LocPolResult> locpol(
     VectorXd Y, MatrixXd X, const VectorXd& x, int pol_ord = 2, MatrixXd M = MatrixXd(),
-    const char* kern = "gaussian", const char* gof = "fpe", const char* minmethod = "globmin",
+    const char* kern = "gaussian", const char* minmethod = "globmin",
     VectorXd v = VectorXd(), vector<int> ks = {}, vector<int> ind = {}
 ) {
     int d = X.rows(), n = X.cols();
@@ -112,7 +112,7 @@ tuple<VectorXd, double, LocPolResult> locpol_simplified(
     int npar;
     MatrixXd Xx;
     tie(Xx, npar) = mkdesign(X_centered(ind, all), pol_ord);
-
+    //cout << Xx.block(0,0,7,5) << endl;
     kmin = max({ 2 * npar - 1, pol_ord + 3, kmin });
 
     double alpha =  (1.0 + 0.3 / d);
@@ -141,15 +141,19 @@ tuple<VectorXd, double, LocPolResult> locpol_simplified(
             V.insert(j, j) = v[j];
         }
 
+
         MatrixXd Xxk = Xx.leftCols(k);
 
+
         MatrixXd sqrtVW = (V.cwiseSqrt() * W.cwiseSqrt()).toDense();
+
         HouseholderQR<MatrixXd> qr(sqrtVW * Xxk.transpose());
         MatrixXd Q = qr.householderQ();
         MatrixXd R = qr.matrixQR().triangularView<Upper>().toDenseMatrix();
-        //cout<< R.colPivHouseholderQr().solve(Q.topRows(k).transpose().eval()) <<endl;
         MatrixXd H = R.colPivHouseholderQr().solve(Q.topRows(k).transpose().eval()) * sqrtVW;
-        //cout << Y.rows() << " " << Y.cols() << endl;
+
+       
+
         VectorXd bhat = H * Y.head(k);
         B.col(i) = bhat;
 
@@ -188,12 +192,14 @@ tuple<VectorXd, double, LocPolResult> locpol_simplified(
     S.Y_selected = Y.head(S.kopt);
     S.X_selected = X(Eigen::all, Eigen::seq(0, S.kopt - 1));
     S.dim = d;
-    cout << (B.col(minind).transpose() * Xx.leftCols(S.kopt)).rows() << endl;
+    //cout << (B.col(minind).transpose() * Xx.leftCols(S.kopt)).rows() << endl;
     S.resid = S.Y_selected - (B.col(minind).transpose() * Xx.leftCols(S.kopt)).transpose();
 
     return make_tuple(B.col(minind), locdata(1, minind), S);
 }
 
+
+// // Code to test the locpol function
 //int main() {
 //    // Example input data
 //    int num_samples = 654;
@@ -217,7 +223,7 @@ tuple<VectorXd, double, LocPolResult> locpol_simplified(
 //        VectorXd B_opt;
 //        double h_opt;
 //        LocPolResult S;
-//        std::tie(B_opt, h_opt, S) = locpol_simplified(Y, X, x, pol_ord, M, "gaussian", "fpe", "globmin", v, ks);
+//        std::tie(B_opt, h_opt, S) = locpol(Y, X, x, pol_ord, M, "gaussian", "fpe", "globmin", v, ks);
 //
 //        // Display the results
 //        cout << "Optimal B (coefficients):\n" << B_opt.transpose() << endl;

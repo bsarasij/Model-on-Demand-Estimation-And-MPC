@@ -9,11 +9,11 @@ using namespace Eigen;
 using namespace std;
 
 struct EstimationData {
-    Eigen::VectorXd Y;      // Output of estimation data set (1x800)
-    Eigen::MatrixXd X;  // Regressor of estimation data set (2x800*1)
+    Eigen::VectorXd Y;      // Output of estimation data set 
+    Eigen::MatrixXd X;  // Regressor of estimation data set 
     Eigen::VectorXd var;    // Variance
-    Eigen::MatrixXd M;      // Model data
-    std::vector<int> nn;        // Model order [na nb nk]
+    Eigen::MatrixXd M;      // Scaling Matrix
+    Eigen::MatrixXd nn;        // Model order [na nb nk]
     int size;                   // Size of the dataset
     double T;                   // Sampling interval
 };
@@ -25,7 +25,7 @@ struct RegressionResult {
     VectorXd v;
 };
 
-// Placeholder for the modmkreg function (to be implemented as per specific requirements)
+// Function Declaration for modmkreg
 RegressionResult modmkreg(const Eigen::MatrixXd& z, const std::vector<int>& nn, double ve);
 
 EstimationData modmkdb(const Eigen::MatrixXd& z, const std::vector<int>& nn, double T = 1.0, double ve = 0.0) {
@@ -38,13 +38,18 @@ EstimationData modmkdb(const Eigen::MatrixXd& z, const std::vector<int>& nn, dou
 
     RegressionResult result = modmkreg(z, nn, ve);
 
+    MatrixXd eigen_nn(1,nn.size());
+    for (int i = 0; i < nn.size(); ++i) {
+        eigen_nn(0,i) = nn[i];
+    }
+
 
     EstimationData Z;
     Z.Y = result.y;
     Z.X = result.phi[0];
     Z.var = result.v;
     Z.M = result.M[0];
-    Z.nn = nn;
+    Z.nn = eigen_nn;
     Z.size = X.size()==0 ? 0 : X.cols();
 
     // Check if T is a valid numeric value (default to 1 if invalid)

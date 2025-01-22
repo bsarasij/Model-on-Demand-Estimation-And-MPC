@@ -52,7 +52,7 @@ tuple<VectorXd, MatrixXd, VectorXd, VectorXd> normsort(
     }
 
     // Compute distances using M-norm: sqrt(1' * (X .* (M * X)))
-    VectorXd dist = (X.array() * (M * X).array()).colwise().sum().cwiseSqrt();
+    VectorXd dist = ((X.array()).cwiseProduct((M * X).array())).colwise().sum().cwiseSqrt();
 
     // Sort indices based on distance
     vector<int> sortedIndices = sortIndices(dist);

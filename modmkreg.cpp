@@ -77,21 +77,23 @@ RegressionResult modmkreg(const MatrixXd& z, const vector<int>& nn, double ve = 
                     phi[ll](index++, jj) = z(ii - p - 1, kk);
                 }
             }
-
+            
             // Handle input regressors
             for (int kk = 0; kk < nu; ++kk) {
                 for (int p = 0; p < NB[kk]; ++p) {
-                    phi[ll](index++, jj) = z(ii - NK[kk] - p - 1, kk + ny);
+                    phi[ll](index++, jj) = z(ii - NK[kk] - p, kk + ny);
                 }
             }
         }
-
+        
         // Default scaling matrix (inverse covariance)
         MatrixXd phiT = phi[ll].transpose();
         VectorXd stddev = computeStdDev(phiT);
         for (int i = 0; i < regs; ++i) {
             M[ll](i, i) = 1.0 / (stddev(i) * stddev(i));
         }
+        /*cout << phi[ll](all,0)<< endl;
+        cout << z.block(0, 0, 10, 3) << endl;*/
     }
 
     VectorXd v;
